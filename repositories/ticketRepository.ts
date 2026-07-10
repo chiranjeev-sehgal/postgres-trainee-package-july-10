@@ -48,7 +48,7 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
   return prisma.ticket.findMany({
     where: {
       dueDate: {
-        gt: now
+        lt: now // have to check less than now, because overdue means due date is in the past
       },
       status: {
         not: "closed"
@@ -83,7 +83,7 @@ export async function getTicketStatistics(): Promise<{
       GROUP BY status
     `,
     prisma.$queryRaw<RawGroupedCount[]>`
-      SELECT priority::text AS key, COUNT("assignedTo")::bigint AS count
+      SELECT priority::text AS key, COUNT("assignedTo")::text AS count -- assignedTO is String, so we need to cast it to string
       FROM "Ticket"
       GROUP BY priority
     `,

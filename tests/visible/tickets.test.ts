@@ -1,4 +1,4 @@
-import handler from "@/pages/api/tickets/index";
+import handler from "@/pages/api/tickets/pages";
 import { setupDatabase, resetDatabase, teardownDatabase } from "@/tests/helpers/database";
 import { callApi } from "@/tests/helpers/request";
 

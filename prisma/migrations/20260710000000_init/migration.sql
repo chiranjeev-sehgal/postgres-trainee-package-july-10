@@ -19,13 +19,10 @@ CREATE TABLE "Ticket" (
 );
 
 -- CreateIndex
-CREATE INDEX "Ticket_status_dueDate_idx" ON "Ticket"("status", "dueDate");
+CREATE INDEX "Ticket_status_dueDate_idx" ON "Ticket"("dueDate", "status");
 
 -- CreateIndex
-CREATE INDEX "Ticket_priority_dueDate_idx" ON "Ticket"("priority", "dueDate");
+CREATE INDEX "Ticket_priority_dueDate_idx" ON "Ticket"("dueDate", "priority");
 
 -- CreateIndex
-CREATE INDEX "Ticket_assignedTo_createdAt_idx" ON "Ticket"("assignedTo", "createdAt");
-
--- CreateIndex
-CREATE INDEX "Ticket_createdAt_idx" ON "Ticket"("createdAt");
+CREATE INDEX "Ticket_assignedTo_createdAt_idx" ON "Ticket"("createdAt", "assignedTo");

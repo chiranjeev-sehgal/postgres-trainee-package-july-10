@@ -27,7 +27,7 @@ export default async function handler(
       const tickets = await listTickets({
         status: statusParam ? validateStatus(statusParam) : undefined,
         priority: priorityParam ? validatePriority(priorityParam) : undefined,
-        assignedTo
+        assignedTo: assignedTo ? assignedTo.trim() : undefined // listTickets expects assignedto as params in listTickets
       });
 
       response.status(200).json({
