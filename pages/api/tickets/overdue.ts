@@ -19,7 +19,7 @@ export default async function handler(
     const priority = priorityParam ? validatePriority(priorityParam) : undefined;
     const tickets = await listOverdueTickets(priority);
 
-    response.status(200).json({
+    return response.status(200).json({
       success: true,
       data: tickets,
       count: tickets.length
@@ -38,5 +38,6 @@ export default async function handler(
     }
 
     createApiError(response, 500, "INTERNAL_ERROR", "Internal server error");
+    return;
   }
 }

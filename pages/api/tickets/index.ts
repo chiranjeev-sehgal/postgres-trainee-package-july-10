@@ -58,17 +58,16 @@ export default async function handler(
         assignedTo
       });
 
-      response.status(201).json({
+      return response.status(201).json({
         success: true,
         data: ticket
       });
-      return;
     }
 
     logger.warn("Unsupported method on tickets index", {
       method: request.method
     });
-    response.status(400).json({
+    return response.status(400).json({
       success: false,
       error: {
         code: "METHOD_NOT_ALLOWED",
@@ -95,7 +94,7 @@ export default async function handler(
       return;
     }
 
-    response.status(500).json({
+    return response.status(500).json({
       success: false,
       error: {
         code: "INTERNAL_ERROR",
