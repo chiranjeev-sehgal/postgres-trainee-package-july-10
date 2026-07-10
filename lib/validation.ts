@@ -61,7 +61,7 @@ export function validateRequiredString(value: unknown, fieldName: string): strin
 
 export function validateIsoDate(value: unknown, fieldName: string): string {
   if (typeof value !== "string" || value.trim() === "") {
-    throw new Error(`${fieldName} is required`);
+    throw new Error(`Invalid ${fieldName} is required`);
   }
 
   const date = new Date(value);
@@ -71,3 +71,4 @@ export function validateIsoDate(value: unknown, fieldName: string): string {
 
   return date.toISOString();
 }
+
