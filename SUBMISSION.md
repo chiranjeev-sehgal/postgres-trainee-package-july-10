@@ -11,12 +11,16 @@ Final Commit SHA:4df98397d189ff3cb56afc68ad02eb9d8f35a4c8
 ## Bugs Identified
 function calls were not returning properly
 added a gitignore file to ignore node_modules
-Test cases are not running
+dueDate was returning the future instead of the past.
+active status filter not correct.
+priority sorting is reversed.
+Test cases are not running 
+.env file had incorrect url correct - DATABASE_URL="postgresql://postgres:admin@localhost:5432"
 ## Root Causes
 missing return statements
 testcases are not running due to docker not being setup
 ## Files Changed
-index.ts, overdue.ts, statistics.ts
+index.ts, overdue.ts, statistics.ts, ticketRepository.ts .env
 ## Tests Added or Updated
 
 ## Commands Run
