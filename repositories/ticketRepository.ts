@@ -85,7 +85,7 @@ export async function getTicketStatistics(): Promise<{
       GROUP BY status
     `,
     prisma.$queryRaw<RawGroupedCount[]>`
-      SELECT priority::text AS key, COUNT("assignedTo")::bigint AS count
+      SELECT priority::text AS key, COUNT(*)::bigint AS count
       FROM "Ticket"
       GROUP BY priority
     `,
