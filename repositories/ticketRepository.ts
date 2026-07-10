@@ -48,10 +48,10 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
   return prisma.ticket.findMany({
     where: {
       dueDate: {
-        gt: now
+        lt: now
       },
       status: {
-        not: "closed"
+        notIn: ["resolved", "closed"] as Status[]
       },
       ...(priority ? { priority } : {})
     },
@@ -83,7 +83,7 @@ export async function getTicketStatistics(): Promise<{
       GROUP BY status
     `,
     prisma.$queryRaw<RawGroupedCount[]>`
-      SELECT priority::text AS key, COUNT("assignedTo")::bigint AS count
+      SELECT priority::text AS key, COUNT(*)::bigint AS count
       FROM "Ticket"
       GROUP BY priority
     `,
@@ -91,10 +91,14 @@ export async function getTicketStatistics(): Promise<{
       where: {
         dueDate: {
           lt: now
+        },
+        status: {
+          notIn: ["resolved", "closed"] as Status[]
         }
       }
     })
   ]);
+
 
   return {
     total,
