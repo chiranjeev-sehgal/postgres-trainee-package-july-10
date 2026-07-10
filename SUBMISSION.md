@@ -18,11 +18,8 @@ Final Commit SHA:
 
 ## Commands Run
 
-## AI Tools Used
-
-## Prompts Used
-
-## AI Output Rejected or Corrected
+## AI Usage Confirmation
+I confirm that I did not use AI tools during this challenge: Yes / No
 
 ## Known Remaining Issues
 
