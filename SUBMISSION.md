@@ -31,7 +31,15 @@ This could also be changed by explicitly adding proper json.stringify at the cre
   return JSON.stringify(ticket);
 }
 ## Commands Run
-First added proper console statements using console.log on index.ts file and the validation file which helped me debug this code
+First added proper console statements using console.log on index.ts file and the validation file which helped me debug this code. After checking on postman when I hit a POST request at http://localhost:3000/api/tickets with body data as {
+  "title": "TestTicket",
+  "description": "Abcd test description",
+  "status": "open",
+  "priority": "high",
+  "assignedTo": "alex",
+  "dueDate":"2026-01-27T12:00:00.000Z"
+}
+It gave me  success in creating a new ticket POST /api/tickets 201 in 342ms
 ## AI Usage Confirmation
 I confirm that I did not use AI tools during this challenge: Yes 
 
