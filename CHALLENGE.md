@@ -10,14 +10,15 @@ Investigate the existing PostgreSQL-backed ticket APIs, identify the business de
 
 ## Permitted Resources
 
-- Local documentation
-- Official package documentation
+- Local documentation in this repository
+- Official documentation for tools and libraries used in this project (for example Next.js, Prisma, PostgreSQL, Node.js, Vitest)
 - Your editor, terminal, and test tools
-- AI assistance if fully disclosed in `SUBMISSION.md`
 
 ## AI Policy
 
-AI usage is allowed only if you document the tools used, the prompts submitted, and any output you rejected or corrected. You are responsible for the final code.
+AI usage is strictly prohibited. Do not use AI coding assistants, chatbots, code generators, or any AI-powered tooling (including editor-integrated AI) at any point during the challenge.
+
+You may consult official documentation for the tools and libraries used in this project. You may not use AI to summarize, search, or interpret that documentation.
 
 ## Rules
 
