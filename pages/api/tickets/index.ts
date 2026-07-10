@@ -30,12 +30,11 @@ export default async function handler(
         assignedTo
       });
 
-      response.status(200).json({
+      return response.status(200).json({
         success: true,
         data: tickets,
         count: tickets.length
       });
-      return;
     }
 
     if (request.method === "POST") {
@@ -58,17 +57,16 @@ export default async function handler(
         assignedTo
       });
 
-      response.status(201).json({
+      return response.status(201).json({
         success: true,
         data: ticket
       });
-      return;
     }
 
     logger.warn("Unsupported method on tickets index", {
       method: request.method
     });
-    response.status(400).json({
+    return response.status(400).json({
       success: false,
       error: {
         code: "METHOD_NOT_ALLOWED",
@@ -81,21 +79,18 @@ export default async function handler(
     });
 
     if (error instanceof Error && error.message.includes("Invalid")) {
-      createApiError(response, 400, "VALIDATION_ERROR", error.message);
-      return;
+      return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
 
     if (error instanceof Error && error.message.includes("required")) {
-      createApiError(response, 400, "VALIDATION_ERROR", error.message);
-      return;
+      return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
 
     if (error instanceof Error && error.message.includes("single value")) {
-      createApiError(response, 400, "VALIDATION_ERROR", error.message);
-      return;
+      return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
 
-    response.status(500).json({
+    return response.status(500).json({
       success: false,
       error: {
         code: "INTERNAL_ERROR",

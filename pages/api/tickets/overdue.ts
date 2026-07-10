@@ -10,8 +10,7 @@ export default async function handler(
 ): Promise<void> {
   if (request.method !== "GET") {
     response.setHeader("Allow", "GET");
-    createApiError(response, 405, "METHOD_NOT_ALLOWED", "Method not allowed");
-    return;
+    return createApiError(response, 405, "METHOD_NOT_ALLOWED", "Method not allowed");
   }
 
   try {
@@ -19,7 +18,7 @@ export default async function handler(
     const priority = priorityParam ? validatePriority(priorityParam) : undefined;
     const tickets = await listOverdueTickets(priority);
 
-    response.status(200).json({
+    return response.status(200).json({
       success: true,
       data: tickets,
       count: tickets.length
@@ -28,15 +27,13 @@ export default async function handler(
     logger.error("Overdue handler failed", error);
 
     if (error instanceof Error && error.message.includes("Invalid")) {
-      createApiError(response, 400, "VALIDATION_ERROR", error.message);
-      return;
+      return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
 
     if (error instanceof Error && error.message.includes("single value")) {
-      createApiError(response, 400, "VALIDATION_ERROR", error.message);
-      return;
+      return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
 
-    createApiError(response, 500, "INTERNAL_ERROR", "Internal server error");
+    return createApiError(response, 500, "INTERNAL_ERROR", "Internal server error");
   }
 }
