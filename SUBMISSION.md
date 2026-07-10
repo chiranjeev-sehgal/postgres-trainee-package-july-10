@@ -40,6 +40,9 @@ the order
 ## Tests Added or Updated
 
 ## Commands Run
+- prisma commands to populate database.
+- npm run dev to open website and built to check the pages
+
 
 ## AI Usage Confirmation
 I confirm that I did not use AI tools during this challenge: Yes 
