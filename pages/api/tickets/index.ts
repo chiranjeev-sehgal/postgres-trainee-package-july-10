@@ -89,7 +89,6 @@ export default async function handler(
     if (error instanceof Error && error.message.includes("single value")) {
       return createApiError(response, 400, "VALIDATION_ERROR", error.message);
     }
-
     return response.status(500).json({
       success: false,
       error: {

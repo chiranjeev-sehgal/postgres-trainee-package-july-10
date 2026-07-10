@@ -71,13 +71,15 @@ export async function getTicketStatistics(): Promise<{
   byStatus: Record<string, number>;
   byPriority: Record<string, number>;
   overdueActive: number;
-}> {
-  const prisma = getPrisma();
-  const now = getControlledNow();
+}> { 
+  try {
 
-  const [total, statusCounts, priorityCounts, overdueActive] = await Promise.all([
-    prisma.ticket.count(),
-    prisma.$queryRaw<RawGroupedCount[]>`
+    const prisma = getPrisma();
+    const now = getControlledNow();
+
+    const [total, statusCounts, priorityCounts, overdueActive] = await Promise.all([
+      prisma.ticket.count(),
+      prisma.$queryRaw<RawGroupedCount[]>`
       SELECT status::text AS key, COUNT(*)::bigint AS count
       FROM "Ticket"
       GROUP BY status
@@ -98,8 +100,11 @@ export async function getTicketStatistics(): Promise<{
 
   return {
     total,
-    byStatus: Object.fromEntries(statusCounts.map((row) => [row.key, Number(row.count)])),
-    byPriority: Object.fromEntries(priorityCounts.map((row) => [row.key, Number(row.count)])),
+    byStatus: Object.fromEntries(statusCounts.map((row: { key: string; count: string | number }) => [row.key, Number(row.count)])),
+    byPriority: Object.fromEntries(priorityCounts.map((row: { key: string; count: string | number }) => [row.key, Number(row.count)])),
     overdueActive
   };
+  }catch(error){
+    throw error;
+  }
 }
