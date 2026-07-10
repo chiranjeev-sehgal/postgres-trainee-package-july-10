@@ -15,14 +15,19 @@ return is either missing in pages/api/tickets or at wrong place in pages/api/tic
 commit ad9307d3c9d7fc4ebe8639131dc3490c66f732a7
 type missing in returns statement in ticketrepository.ts file
 
+commit 53d9e7245c2a7010447252110cafd8eb6a30af35
+assignedTo to asterisk in ticketrepository because if assigneTo is null it cant be counted in priority count 
+
 ## Root Causes
 the return statement was missing in pages/api/tickets/index.ts file
 type was missing in returns statement in ticketrepository.ts file
+assigned to asterisk in ticketrepository.ts file because if assigneTo is null it cant be counted in priority count 
 
 
 ## Files Changed
 index.ts, overdue.ts, statistics.ts
 ticketRepository.ts
+
 
 ## Tests Added or Updated
 no test were added
