@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ApiErrorResponse, ApiSuccessResponse, TicketRecord } from "@/types/api";
+import type {
+  ApiErrorResponse,
+  ApiSuccessResponse,
+  TicketRecord,
+} from "@/types/api";
 import { logger } from "@/lib/logger";
 import {
   createApiError,
@@ -7,7 +11,7 @@ import {
   validateIsoDate,
   validatePriority,
   validateRequiredString,
-  validateStatus
+  validateStatus,
 } from "@/lib/validation";
 import { createTicket, listTickets } from "@/repositories/ticketRepository";
 
@@ -16,36 +20,64 @@ type TicketCreateResponse = ApiSuccessResponse<TicketRecord>;
 
 export default async function handler(
   request: NextApiRequest,
-  response: NextApiResponse<TicketListResponse | TicketCreateResponse | ApiErrorResponse>
+  response: NextApiResponse<
+    TicketListResponse | TicketCreateResponse | ApiErrorResponse
+  >,
 ): Promise<void> {
   try {
     if (request.method === "GET") {
-      const statusParam = extractSingleQueryParam(request.query.status, "status");
-      const priorityParam = extractSingleQueryParam(request.query.priority, "priority");
-      const assignedTo = extractSingleQueryParam(request.query.assignedTo, "assignedTo");
+      const statusParam = extractSingleQueryParam(
+        request.query.status,
+        "status",
+      );
+      const priorityParam = extractSingleQueryParam(
+        request.query.priority,
+        "priority",
+      );
+      const assignedTo = extractSingleQueryParam(
+        request.query.assignedTo,
+        "assignedTo",
+      );
 
       const tickets = await listTickets({
         status: statusParam ? validateStatus(statusParam) : undefined,
         priority: priorityParam ? validatePriority(priorityParam) : undefined,
-        assignedTo
+        assignedTo,
       });
 
       response.status(200).json({
         success: true,
         data: tickets,
-        count: tickets.length
+        count: tickets.length,
       });
       return;
     }
 
     if (request.method === "POST") {
-      const title = validateRequiredString(request.body?.title, "title");
-      const description = validateRequiredString(request.body?.description, "description");
-      const status = validateStatus(validateRequiredString(request.body?.status, "status"));
-      const priority = validatePriority(validateRequiredString(request.body?.priority, "priority"));
+      console.log(request.body);
+console.log(typeof request.body);
+      const body =
+  typeof request.body === "string"
+    ? JSON.parse(request.body)
+    : request.body;
+      const title = validateRequiredString(body?.title, "title");
+      
+
+      // const title = validateRequiredString(request.body?.title, "title");
+      const description = validateRequiredString(
+        request.body?.description,
+        "description",
+      );
+      const status = validateStatus(
+        validateRequiredString(request.body?.status, "status"),
+      );
+      const priority = validatePriority(
+        validateRequiredString(request.body?.priority, "priority"),
+      );
       const dueDate = validateIsoDate(request.body?.dueDate, "dueDate");
       const assignedTo =
-        typeof request.body?.assignedTo === "string" && request.body.assignedTo.trim() !== ""
+        typeof request.body?.assignedTo === "string" &&
+        request.body.assignedTo.trim() !== ""
           ? request.body.assignedTo.trim()
           : null;
 
@@ -55,29 +87,42 @@ export default async function handler(
         status,
         priority,
         dueDate: new Date(dueDate),
-        assignedTo
+        assignedTo,
       });
 
       response.status(201).json({
         success: true,
-        data: ticket
+        data: ticket,
       });
       return;
     }
 
+    // logger.warn("Unsupported method on tickets index", {
+    //   method: request.method,
+    // });
     logger.warn("Unsupported method on tickets index", {
-      method: request.method
-    });
+  method: request.method
+});
+
+response.setHeader("Allow", ["GET", "POST"]);
+
+response.status(405).json({
+  success: false,
+  error: {
+    code: "METHOD_NOT_ALLOWED",
+    message: "Unsupported method"
+  }
+});
     response.status(400).json({
       success: false,
       error: {
         code: "METHOD_NOT_ALLOWED",
-        message: "Unsupported method"
-      }
+        message: "Unsupported method",
+      },
     });
   } catch (error) {
     logger.error("Tickets index handler failed", error, {
-      method: request.method
+      method: request.method,
     });
 
     if (error instanceof Error && error.message.includes("Invalid")) {
@@ -99,8 +144,8 @@ export default async function handler(
       success: false,
       error: {
         code: "INTERNAL_ERROR",
-        message: error instanceof Error ? error.message : "Unexpected error"
-      }
+        message: error instanceof Error ? error.message : "Unexpected error",
+      },
     });
   }
 }

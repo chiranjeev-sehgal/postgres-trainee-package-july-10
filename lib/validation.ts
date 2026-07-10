@@ -51,7 +51,9 @@ export function validatePriority(value: string): Priority {
   throw new Error("Invalid priority value");
 }
 
+
 export function validateRequiredString(value: unknown, fieldName: string): string {
+  console.log(value, " ", fieldName)
   if (typeof value !== "string" || value.trim() === "") {
     throw new Error(`${fieldName} is required`);
   }
