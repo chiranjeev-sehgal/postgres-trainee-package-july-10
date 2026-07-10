@@ -1,5 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
-}
+{"/api/tickets":"pages/api/tickets.js","/api/tickets/overdue":"pages/api/tickets/overdue.js","/api/tickets/statistics":"pages/api/tickets/statistics.js","/_app":"pages/_app.js","/_error":"pages/_error.js","/_document":"pages/_document.js","/404":"pages/404.html"}

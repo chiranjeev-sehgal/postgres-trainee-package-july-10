@@ -51,7 +51,7 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
         lt: now
       },
       status: {
-        not: "closed"
+        notIn: ["closed", "resolved"]
       },
       ...(priority ? { priority } : {})
     },
@@ -93,7 +93,7 @@ export async function getTicketStatistics(): Promise<{
           lt: now
         },
         status: {
-          not: "closed"
+          notIn: ["closed", "resolved"]
         }
       }
     })
