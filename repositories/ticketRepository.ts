@@ -48,7 +48,7 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
   return prisma.ticket.findMany({
     where: {
       dueDate: {
-        gt: now
+        lt: now   // only those tickets whose dueDate is less than the current time are considered overdue
       },
       status: {
         not: "closed"
@@ -83,14 +83,17 @@ export async function getTicketStatistics(): Promise<{
       GROUP BY status
     `,
     prisma.$queryRaw<RawGroupedCount[]>`
-      SELECT priority::text AS key, COUNT("assignedTo")::bigint AS count
+      SELECT priority::text AS key, COUNT(*)::bigint AS count 
       FROM "Ticket"
       GROUP BY priority
-    `,
+    `,  // COUNT(*) AS COUNT(assignedTo) will not work because assignedTo is nullable, so we use COUNT(*) instead
     prisma.ticket.count({
       where: {
         dueDate: {
           lt: now
+        },
+        status: {
+          not: "closed"  // only thse tics that are not closed are considered active, so we only count those tickets that are not closed
         }
       }
     })
