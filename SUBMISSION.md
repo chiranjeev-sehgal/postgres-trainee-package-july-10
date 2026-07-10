@@ -24,6 +24,11 @@ the order
 
 - changed gt to lt since we need less than due date line 51 , ticketRepository
 
+- Added status: {
+        not: "closed"
+      }
+      In tickeRepository to check for status
+
 ## Root Causes
 
 ## Files Changed
@@ -37,9 +42,11 @@ the order
 ## Commands Run
 
 ## AI Usage Confirmation
-I confirm that I did not use AI tools during this challenge: Yes / No
+I confirm that I did not use AI tools during this challenge: Yes 
 
 ## Known Remaining Issues
 
+There is issue with parsing of data due to which post method give error, unable to resolve it.
+
 ## Final Confidence Level
-Low / Medium / High
+Medium

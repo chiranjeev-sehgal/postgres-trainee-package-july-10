@@ -92,7 +92,10 @@ export async function getTicketStatistics(): Promise<{
         dueDate: {
           lt: now
         }
+        ,status: {
+        not: "closed"
       }
+    }
     })
   ]);
 
