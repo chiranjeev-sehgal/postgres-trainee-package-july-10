@@ -26,7 +26,7 @@ Set `DATABASE_URL` in `.env` for local development. Automated tests override the
 ## Prisma Generation and Migrations
 
 ```bash
-npm run prisma:generate
+¸
 npm run prisma:migrate
 ```
 

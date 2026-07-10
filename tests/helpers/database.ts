@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+// Use the type of the fixtures array instead of importing Prisma types
 import { disconnectPrisma, getPrisma } from "@/lib/prisma";
 import { ticketFixtures } from "@/tests/helpers/fixtures";
 import { startTestContainer } from "@/tests/helpers/testContainer";
@@ -8,7 +8,7 @@ export async function setupDatabase(): Promise<void> {
 }
 
 export async function resetDatabase(
-  fixtures: Prisma.TicketCreateManyInput[] = ticketFixtures
+  fixtures: typeof ticketFixtures = ticketFixtures
 ): Promise<void> {
   const prisma = getPrisma();
   await prisma.ticket.deleteMany();

@@ -10,7 +10,8 @@ export type ListTicketFilters = {
 
 type RawGroupedCount = {
   key: string;
-  count: bigint;
+
+  count: string | bigint;
 };
 
 export async function listTickets(filters: ListTicketFilters): Promise<Ticket[]> {
@@ -48,7 +49,7 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
   return prisma.ticket.findMany({
     where: {
       dueDate: {
-        gt: now
+        lt: now
       },
       status: {
         not: "closed"
@@ -57,7 +58,7 @@ export async function listOverdueTickets(priority?: Priority): Promise<Ticket[]>
     },
     orderBy: [
       {
-        priority: "asc"
+        priority: "desc"
       },
       {
         dueDate: "asc"
@@ -83,7 +84,7 @@ export async function getTicketStatistics(): Promise<{
       GROUP BY status
     `,
     prisma.$queryRaw<RawGroupedCount[]>`
-      SELECT priority::text AS key, COUNT("assignedTo")::bigint AS count
+      SELECT priority::text AS key, COUNT(*)::bigint AS count
       FROM "Ticket"
       GROUP BY priority
     `,
@@ -91,6 +92,9 @@ export async function getTicketStatistics(): Promise<{
       where: {
         dueDate: {
           lt: now
+        },
+        status: {
+          not: "closed"
         }
       }
     })
@@ -98,8 +102,8 @@ export async function getTicketStatistics(): Promise<{
 
   return {
     total,
-    byStatus: Object.fromEntries(statusCounts.map((row) => [row.key, Number(row.count)])),
-    byPriority: Object.fromEntries(priorityCounts.map((row) => [row.key, Number(row.count)])),
+    byStatus: Object.fromEntries(statusCounts.map((row: { key: any; count: any; }) => [row.key, Number(row.count)])),
+    byPriority: Object.fromEntries(priorityCounts.map((row: { key: any; count: any; }) => [row.key, Number(row.count)])),
     overdueActive
   };
 }

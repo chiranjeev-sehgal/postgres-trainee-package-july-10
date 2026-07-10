@@ -1,8 +1,8 @@
 # Submission
 
 ## Trainee Details
-Name:
-Batch:
+Name: Arimardan Pandey Saurabh
+Batch: Python (Aakash Sir)
 Database Track: PostgreSQL
 Repository:
 Branch:

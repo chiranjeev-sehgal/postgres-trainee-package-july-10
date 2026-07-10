@@ -74,6 +74,16 @@ export async function startTestContainer(): Promise<void> {
     return;
   }
 
+  // Quick check for a working Docker/runtime before delegating to testcontainers.
+  // This provides a clearer error if Docker isn't running on the host.
+  try {
+    execFileSync("docker", ["info"], { stdio: "ignore" });
+  } catch (err) {
+    throw new Error(
+      "Docker or a compatible container runtime is not available. Start Docker Desktop or ensure DOCKER_HOST is configured so testcontainers can start Postgres."
+    );
+  }
+
   container = await new GenericContainer("postgres:16-alpine")
     .withEnvironment({
       POSTGRES_DB: "debugging_olympics_test",
